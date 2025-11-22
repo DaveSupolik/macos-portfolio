@@ -1,10 +1,11 @@
-import Navbar from "@components/Navbar";
+import { Navbar, Welcome } from "@components";
 import React from "react";
 
 const App = () => {
   return (
-    <main className="w-dvw h-dvh overflow-hidden">
+    <main>
       <Navbar />
+      <Welcome />
     </main>
   );
 };
