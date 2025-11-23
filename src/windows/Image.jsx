@@ -9,7 +9,8 @@ const Image = () => {
 
   if (!data) return null;
 
-  const { name, imageUrl } = data;
+  const { name = "Untitled image", imageUrl } = data ?? {};
+  const hasValidImage = typeof imageUrl === "string" && imageUrl.length > 0;
 
   return (
     <>
@@ -19,12 +20,14 @@ const Image = () => {
       </div>
 
       <div className="p-5 bg-white">
-        {imageUrl ? (
+        {hasValidImage ? (
           <div className="w-full">
             <img
               src={imageUrl}
-              alt={name}
+              alt={name || ""}
               className="w-full h-auto max-h-[70vh] object-contain rounded"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         ) : null}

@@ -8,7 +8,9 @@ const Text = () => {
 
   if (!data) return null;
 
-  const { name, image, subtitle, description } = data;
+  const { name = "Untitled", image, subtitle, description } = data ?? {};
+
+  const hasValidImage = typeof image === "string" && image.length > 0;
 
   return (
     <>
@@ -18,9 +20,15 @@ const Text = () => {
       </div>
 
       <div className="p-5 space-y-6 bg-white">
-        {image ? (
+        {hasValidImage ? (
           <div className="w-full">
-            <img src={image} alt={name} className="w-full h-auto rounded" />
+            <img
+              src={image}
+              alt={name || "image"}
+              className="w-full h-auto rounded"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         ) : null}
 
@@ -31,7 +39,7 @@ const Text = () => {
         {Array.isArray(description) && description.length > 0 ? (
           <div className="space-y-3 leading-relaxed text-base text-gray-800">
             {description.map((para, idx) => (
-              <p key={idx}>{para}</p>
+              <p key={`${para.slice(0, 10)}-${idx}`}>{para}</p>
             ))}
           </div>
         ) : null}
