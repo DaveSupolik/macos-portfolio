@@ -4,7 +4,7 @@ import useWindowStore from "@store/window.js";
 
 const Text = () => {
   const { windows } = useWindowStore();
-  const data = windows.txtfile?.data;
+  const data = windows?.txtfile?.data;
 
   if (!data) return null;
 
