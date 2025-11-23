@@ -12,12 +12,6 @@ const Image = () => {
   const { name = "Untitled image", imageUrl } = data ?? {};
   const hasValidImage = typeof imageUrl === "string" && imageUrl.length > 0;
 
-  const [imgSrc, setImgSrc] = React.useState(hasValidImage ? imageUrl : "");
-
-  React.useEffect(() => {
-    setImgSrc(hasValidImage ? imageUrl : "");
-  }, [imageUrl, hasValidImage]);
-
   return (
     <>
       <div id="window-header">
@@ -29,17 +23,14 @@ const Image = () => {
         {hasValidImage ? (
           <div className="w-full">
             <img
-              src={imgSrc}
-              alt={name || "Image preview"}
+              src={imageUrl}
+              alt={name || ""}
               className="w-full h-auto max-h-[70vh] object-contain rounded"
               loading="lazy"
               decoding="async"
-              onError={() => setImgSrc("/images/placeholder.png")}
             />
           </div>
-        ) : (
-          <div className="text-sm text-gray-600">No image to display.</div>
-        )}
+        ) : null}
       </div>
     </>
   );
