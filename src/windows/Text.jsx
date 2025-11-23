@@ -28,6 +28,11 @@ const Text = () => {
               className="w-full h-auto rounded"
               loading="lazy"
               decoding="async"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = "/images/placeholder.png";
+                e.currentTarget.alt = "Image failed to load";
+              }}
             />
           </div>
         ) : null}
@@ -40,8 +45,7 @@ const Text = () => {
           <div className="space-y-3 leading-relaxed text-base text-gray-800">
             {description.map((para, idx) => {
               const text = typeof para === "string" ? para : String(para ?? "");
-              const key = text.length > 0 ? `p-${text}` : `p-${idx}`;
-              return <p key={key}>{text}</p>;
+              return <p key={idx}>{text}</p>;
             })}
           </div>
         ) : null}
