@@ -38,9 +38,11 @@ const Text = () => {
 
         {Array.isArray(description) && description.length > 0 ? (
           <div className="space-y-3 leading-relaxed text-base text-gray-800">
-            {description.map((para, idx) => (
-              <p key={`${para.slice(0, 10)}-${idx}`}>{para}</p>
-            ))}
+            {description.map((para, idx) => {
+              const text = typeof para === "string" ? para : String(para ?? "");
+              const key = text.length > 0 ? `p-${text}` : `p-${idx}`;
+              return <p key={key}>{text}</p>;
+            })}
           </div>
         ) : null}
       </div>

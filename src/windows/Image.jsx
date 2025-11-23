@@ -5,12 +5,18 @@ import React from "react";
 
 const Image = () => {
   const { windows } = useWindowStore();
-  const data = windows.imgfile?.data;
+  const data = windows?.imgfile?.data;
 
   if (!data) return null;
 
   const { name = "Untitled image", imageUrl } = data ?? {};
   const hasValidImage = typeof imageUrl === "string" && imageUrl.length > 0;
+
+  const [imgSrc, setImgSrc] = React.useState(hasValidImage ? imageUrl : "");
+
+  React.useEffect(() => {
+    setImgSrc(hasValidImage ? imageUrl : "");
+  }, [imageUrl, hasValidImage]);
 
   return (
     <>
@@ -23,14 +29,17 @@ const Image = () => {
         {hasValidImage ? (
           <div className="w-full">
             <img
-              src={imageUrl}
-              alt={name || ""}
+              src={imgSrc}
+              alt={name || "Image preview"}
               className="w-full h-auto max-h-[70vh] object-contain rounded"
               loading="lazy"
               decoding="async"
+              onError={() => setImgSrc("/images/placeholder.png")}
             />
           </div>
-        ) : null}
+        ) : (
+          <div className="text-sm text-gray-600">No image to display.</div>
+        )}
       </div>
     </>
   );

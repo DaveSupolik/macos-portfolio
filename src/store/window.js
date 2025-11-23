@@ -1,6 +1,7 @@
 import { INITIAL_Z_INDEX, WINDOW_CONFIG } from "@constants/index.js";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
+import { audit, AUDIT_EVENTS } from "@/utils/audit";
 
 const useWindowStore = create(
   immer((set) => ({
@@ -15,6 +16,10 @@ const useWindowStore = create(
         win.zIndex = state.nextZIndex;
         win.data = data ?? win.data;
         state.nextZIndex++;
+        audit(AUDIT_EVENTS.WINDOW_OPEN, {
+          windowKey,
+          hasData: !!(data ?? win.data),
+        });
       }),
     closeWindow: (windowKey) =>
       set((state) => {
