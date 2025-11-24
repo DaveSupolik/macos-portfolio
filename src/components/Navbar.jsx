@@ -3,12 +3,17 @@ import { navIcons, navLinks } from "@constants";
 import dayjs from "dayjs";
 import useWindowStore from "@store/window";
 
+// 1. Importujeme Apple logo
+// Předpokládáme, že komponenta je v 'src/components' a obrázky v 'src/images'
+import appleLogo from "../images/logo.svg";
+
 const Navbar = () => {
   const { openWindow } = useWindowStore();
   return (
     <nav>
       <div>
-        <img src="/images/logo.svg" alt="apple logo" />
+        {/* 2. Nahrazení hardcoded cesty proměnnou */}
+        <img src={appleLogo} alt="apple logo" />
         <p className="font-bold">Dave's Macbook</p>
         <ul>
           {navLinks.map(({ id, name, type }) => (
@@ -20,6 +25,9 @@ const Navbar = () => {
       </div>
       <div>
         <ul>
+          {/* POZNÁMKA: navIcons již používá proměnné (img) z konstant,
+            které by měly být importovány a opraveny v souboru s konstantami.
+          */}
           {navIcons.map(({ id, img }) => (
             <li key={id}>
               <img src={img} alt={`icon-${id}`} className="icon-hover" />

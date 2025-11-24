@@ -6,6 +6,10 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 
+// 1. Importujeme soubor s životopisem (PDF asset)
+// Předpokládáme, že komponenta je v 'src/components' a PDF v 'src/files'
+import resumePdf from "../files/resume.pdf";
+
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
@@ -18,7 +22,8 @@ const Resume = () => {
         <WindowControls target="resume" />
         <h2>Resume.pdf</h2>
         <a
-          href="files/resume.pdf"
+          // 2. Oprava cesty pro stahování
+          href={resumePdf}
           download
           className="cursor-pointer"
           title="Download resume"
@@ -26,7 +31,8 @@ const Resume = () => {
           <Download className="icon" />
         </a>
       </div>
-      <Document file="files/resume.pdf">
+      {/* 3. Oprava cesty pro zobrazení v Document komponentě */}
+      <Document file={resumePdf}>
         <Page pageNumber={1} renderTextLayer renderAnnotationLayer />
       </Document>
     </>

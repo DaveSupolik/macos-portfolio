@@ -84,7 +84,9 @@ const Dock = () => {
               onClick={() => toggleApp({ id, canOpen })}
             >
               <img
-                src={`/images/${icon}`}
+                // OPRAVENO: Použijeme přímo proměnnou 'icon' z konstant.
+                // Předpokládáme, že 'icon' již obsahuje importovaný objekt obrázku.
+                src={icon}
                 alt={name}
                 loading="lazy"
                 className={canOpen ? "" : "opacity-60"}

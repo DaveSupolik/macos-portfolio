@@ -2,6 +2,10 @@ import WindowWrapper from "@hoc/WindowWrapper.jsx";
 import { WindowControls } from "@components";
 import useWindowStore from "@store/window.js";
 
+// Importujeme zástupný obrázek
+// Předpokládáme, že komponenta je v 'src/components' a obrázky v 'src/images'
+import placeholderImage from "../images/placeholder.png";
+
 const Text = () => {
   const { windows } = useWindowStore();
   const data = windows?.txtfile?.data;
@@ -10,6 +14,7 @@ const Text = () => {
 
   const { name = "Untitled", image, subtitle, description } = data ?? {};
 
+  // 'image' obsahuje importovanou proměnnou (pokud je opravena v konstantách)
   const hasValidImage = typeof image === "string" && image.length > 0;
 
   return (
@@ -23,14 +28,15 @@ const Text = () => {
         {hasValidImage ? (
           <div className="w-full">
             <img
-              src={image}
+              src={image} // Používá dynamickou proměnnou z konstant
               alt={name || "image"}
               className="w-full h-auto rounded"
               loading="lazy"
               decoding="async"
               onError={(e) => {
                 e.currentTarget.onerror = null;
-                e.currentTarget.src = "/images/placeholder.png";
+                // OPRAVENO: Nahrazení hardcoded cesty proměnnou
+                e.currentTarget.src = placeholderImage;
                 e.currentTarget.alt = "Image failed to load";
               }}
             />

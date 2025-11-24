@@ -2,6 +2,19 @@ import WindowWrapper from "@hoc/WindowWrapper";
 import { WindowControls } from "@components";
 import { socials } from "@constants";
 
+import daveImage from "../images/dave.jpg";
+
+const sanitizeUrl = (url) => {
+  if (typeof url !== "string") return "#";
+  // Omezí nebezpečné protokoly (jako 'javascript:') a zajišťuje, že URL začíná http/https
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  }
+  // Alternativně, pokud URL začíná jiným protokolem (mailto, tel), nechte ji projít.
+  // Pro webové odkazy (socials) je ale nejbezpečnější vyžadovat http/https.
+  return "about:blank"; // Blokuje nebezpečné odkazy
+};
+
 const Contact = () => {
   return (
     <>
@@ -10,15 +23,15 @@ const Contact = () => {
         <h2>Contact me</h2>
       </div>
       <div className="p-5 space-y-5">
-        <img src="/images/dave.jpg" alt="Dave" className="w-20 rounded-full" />
+        <img src={daveImage} alt="Dave" className="w-20 rounded-full" />
         <h3>Lets Connect</h3>
         <p>Got an idea? A bug to squash? Or just wanna talk tech? Im in.</p>
         <p>dave.supolik@gmail.com</p>
         <ul>
           {socials.map(({ id, bg, link, icon, text }) => (
-            <li key={id} style={{ backgroundColor: bg }}>
+            <li key={id} style={{ backgroundColor: bg, color: textColor }}>
               <a
-                href={link}
+                href={sanitizeUrl(link)}
                 target="_blank"
                 rel="noopener noreferrer"
                 title={text}
