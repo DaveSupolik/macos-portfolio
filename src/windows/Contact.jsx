@@ -9,43 +9,44 @@ const sanitizeUrl = (url) => {
   if (!url || typeof url !== "string") return null;
 
   const trimmedUrl = url.trim();
-  // 2. Kontrolujeme prázdný řetězec
   if (trimmedUrl.length === 0) return null;
 
-  // 🚨 NOVÉ: Odmítnutí řídicích znaků a bílých mezer uvnitř URL (kromě mezery po trimu)
-  // [^\S ] = jakýkoli znak, který není mezerou (space) nebo prázdným znakem (whitespace)
+  // 2. Kontrola řídicích znaků a bílých mezer
   if (/[^\S ]|[\u0000-\u001F\u007F]/.test(trimmedUrl)) return null;
 
-  // 🚨 NOVÉ: Normalizace protokolem relativních URL (//example.com) na https://
+  // 3. Normalizace protokolem relativních URL (//example.com) na https://
   const normalized = trimmedUrl.startsWith("//")
     ? `https:${trimmedUrl}`
     : trimmedUrl;
 
-  // Povolená schémata pro validaci URL
+  // 4. Seznam povolených schémat
   const allowedSchemes = ["https:", "http:", "mailto:", "tel:"];
 
   try {
     // Používáme normalizovanou URL pro parsování
     const parsedUrl = new URL(normalized);
 
-    if (allowedSchemes.includes(parsedUrl.protocol)) {
+    // 🚨 ROBUSTNÍ KONTROLA SCHÉMATU (NOVÉ)
+    // Převedeme protokol z parsované URL na malá písmena pro striktní porovnání.
+    const protocolLower = parsedUrl.protocol.toLowerCase();
+
+    if (allowedSchemes.includes(protocolLower)) {
       // Upgrade na HTTPS
-      if (parsedUrl.protocol === "http:") {
+      if (protocolLower === "http:") {
         // Používáme RegExp pro bezpečný a robustní upgrade, pokud je URL http://
         return normalized.replace(/^http:\/\//i, "https://");
       }
 
-      // Vrátí původní, validní URL (https, mailto, tel)
-      // Vracíme normalized, protože je již ošetřená (protokol-relativní)
+      // Vracíme normalized (již ošetřená) URL pro https, mailto a tel
       return normalized;
+    } else {
+      // Protokol není v seznamu povolených
+      return null;
     }
   } catch {
     // Pokud URL constructor selže (neplatný formát), vrátíme null.
     return null;
   }
-
-  // Pokud schéma není v seznamu, vrátíme null.
-  return null;
 };
 
 const Contact = () => {
