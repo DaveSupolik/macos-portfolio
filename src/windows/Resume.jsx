@@ -32,7 +32,12 @@ const Resume = () => {
         </a>
       </div>
       {/* 3. Oprava cesty pro zobrazení v Document komponentě */}
-      <Document file={resumePdf}>
+      <Document
+        file={resumePdf}
+        loading={<div className="p-4">Loading resume…</div>}
+        error={<div className="p-4 text-red-600">Failed to load resume.</div>}
+        onLoadError={(err) => console.error("PDF load error:", err)}
+      >
         <Page pageNumber={1} renderTextLayer renderAnnotationLayer />
       </Document>
     </>

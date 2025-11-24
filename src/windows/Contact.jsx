@@ -2,17 +2,26 @@ import WindowWrapper from "@hoc/WindowWrapper";
 import { WindowControls } from "@components";
 import { socials } from "@constants";
 
-import daveImage from "../images/dave.jpg";
+import daveImage from "../images/dave.jpg"; // Cesta k obrázku ponechána podle Vašeho vstupu
 
 const sanitizeUrl = (url) => {
-  if (typeof url !== "string") return "#";
-  const allowedSchemes = ["https://", "http://", "mailto:", "tel:"];
-  const trimmed = url.trim().toLowerCase();
-  if (allowedSchemes.some((scheme) => trimmed.startsWith(scheme))) {
-    return url;
-  }
+  if (typeof url !== "string") return "about:blank";
 
-  return "about:blank";
+  const trimmedUrl = url.trim();
+  if (trimmedUrl.length === 0) return "about:blank";
+
+  // Povolená schémata pro validaci URL
+  const allowedSchemes = ["https:", "http:", "mailto:", "tel:"];
+
+  try {
+    const parsedUrl = new URL(trimmedUrl);
+
+    if (allowedSchemes.includes(parsedUrl.protocol)) {
+      return trimmedUrl; // Vrátí původní, validní URL
+    }
+  } catch (e) {}
+
+  return "about:blank"; // Neplatné nebo neznámé schéma
 };
 
 const Contact = () => {
@@ -28,19 +37,42 @@ const Contact = () => {
         <p>Got an idea? A bug to squash? Or just wanna talk tech? Im in.</p>
         <p>dave.supolik@gmail.com</p>
         <ul>
-          {socials.map(({ id, bg, link, icon, text }) => (
-            <li key={id} style={{ backgroundColor: bg, color: "#ffffff" }}>
-              <a
-                href={sanitizeUrl(link)}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={text}
-              >
-                <img src={icon} alt={text} className="size-5" />
-                <p>{text}</p>
-              </a>
-            </li>
-          ))}
+          {socials.map(({ id, bg, link, icon, text }) => {
+            const safeUrl = sanitizeUrl(link);
+
+            // Kontrola, zda je URL platný webový odkaz (http/https)
+            const isHttpLink =
+              safeUrl.startsWith("http:") || safeUrl.startsWith("https:");
+
+            // 1. Zkontrolujeme, zda je URL neplatná
+            if (safeUrl === "about:blank") {
+              return (
+                <li key={id} style={{ backgroundColor: bg, color: "#ffffff" }}>
+                  {/* Vykreslíme neklikatelný kontejner */}
+                  <div title={text} aria-disabled="true">
+                    <img src={icon} alt={text} className="size-5" />
+                    <p>{text}</p>
+                  </div>
+                </li>
+              );
+            }
+
+            // 2. Vykreslení funkčního odkazu
+            return (
+              <li key={id} style={{ backgroundColor: bg, color: "#ffffff" }}>
+                <a
+                  href={safeUrl}
+                  // Target a Rel pouze pro HTTP/HTTPS odkazy
+                  target={isHttpLink ? "_blank" : undefined}
+                  rel={isHttpLink ? "noopener noreferrer" : undefined}
+                  title={text}
+                >
+                  <img src={icon} alt={text} className="size-5" />
+                  <p>{text}</p>
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </>
