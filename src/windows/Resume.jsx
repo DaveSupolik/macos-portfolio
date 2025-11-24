@@ -40,10 +40,7 @@ const Resume = () => {
       >
         <Page
           pageNumber={1}
-          width={Math.min(
-            750,
-            typeof window !== "undefined" ? window.innerWidth - 80 : 820
-          )}
+          width={750}
           renderTextLayer={false}
           renderAnnotationLayer={false}
         />

@@ -83,20 +83,28 @@ const Dock = () => {
               disabled={!canOpen}
               onClick={() => toggleApp({ id, canOpen })}
             >
-              <img
-                // KONTROLA TYPU: Zajišťuje, že 'icon' je platný řetězec (URL/base64)
-                src={typeof icon === "string" && icon ? icon : ""}
-                // VYLEPŠENÁ ACCESSIBILITY: Přidává "icon" k alt textu
-                alt={name ? `${name} icon` : "app icon"}
-                loading="lazy"
-                className={canOpen ? "" : "opacity-60"}
-                // FALLBACK: Zabrání zobrazení rozbité ikony
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = ""; // Nastaví prázdný zdroj
-                  e.currentTarget.alt = "icon failed to load"; // Aktualizuje alt text
-                }}
-              />
+              {/* PODMÍNĚNÉ VYKRESLENÍ: Vykreslí <img> jen, pokud je icon platný řetězec */}
+              {typeof icon === "string" && icon ? (
+                <img
+                  src={icon}
+                  alt={name ? `${name} icon` : "app icon"}
+                  loading="lazy"
+                  className={canOpen ? "" : "opacity-60"}
+                  // V případě chyby skryje prvek (zabránění opakovanému načítání)
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.style.visibility = "hidden"; // Skryje, ale zachová prostor
+                    e.currentTarget.alt = "icon failed to load";
+                  }}
+                />
+              ) : (
+                // ZÁSTUPNÝ PRVEK: Vykreslí prázdný span (placeholder)
+                <span
+                  aria-hidden="true"
+                  className={`inline-block ${canOpen ? "" : "opacity-60"}`}
+                  style={{ width: 24, height: 24 }} // Předpokládaná velikost ikony
+                />
+              )}
             </button>
           </div>
         ))}

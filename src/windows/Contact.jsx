@@ -5,34 +5,46 @@ import { socials } from "@constants";
 import daveImage from "../images/dave.jpg"; // Cesta k obrázku ponechána podle Vašeho vstupu
 
 const sanitizeUrl = (url) => {
-  // 1. Explicitně kontrolujeme null, undefined nebo ne-řetězec
+  // 1. Explicitní kontrola null/falsy/ne-řetězec
   if (!url || typeof url !== "string") return null;
 
   const trimmedUrl = url.trim();
   // 2. Kontrolujeme prázdný řetězec
   if (trimmedUrl.length === 0) return null;
 
+  // 🚨 NOVÉ: Odmítnutí řídicích znaků a bílých mezer uvnitř URL (kromě mezery po trimu)
+  // [^\S ] = jakýkoli znak, který není mezerou (space) nebo prázdným znakem (whitespace)
+  if (/[^\S ]|[\u0000-\u001F\u007F]/.test(trimmedUrl)) return null;
+
+  // 🚨 NOVÉ: Normalizace protokolem relativních URL (//example.com) na https://
+  const normalized = trimmedUrl.startsWith("//")
+    ? `https:${trimmedUrl}`
+    : trimmedUrl;
+
   // Povolená schémata pro validaci URL
   const allowedSchemes = ["https:", "http:", "mailto:", "tel:"];
 
   try {
-    const parsedUrl = new URL(trimmedUrl);
-
-    // Pokud je schéma "http:", nahradíme ho "https:"
-    if (parsedUrl.protocol === "http:") {
-      const upgradedUrl = trimmedUrl.replace("http://", "https://");
-      return upgradedUrl;
-    }
+    // Používáme normalizovanou URL pro parsování
+    const parsedUrl = new URL(normalized);
 
     if (allowedSchemes.includes(parsedUrl.protocol)) {
-      return trimmedUrl; // Vrátí původní, validní URL (https, mailto, tel)
+      // Upgrade na HTTPS
+      if (parsedUrl.protocol === "http:") {
+        // Používáme RegExp pro bezpečný a robustní upgrade, pokud je URL http://
+        return normalized.replace(/^http:\/\//i, "https://");
+      }
+
+      // Vrátí původní, validní URL (https, mailto, tel)
+      // Vracíme normalized, protože je již ošetřená (protokol-relativní)
+      return normalized;
     }
   } catch {
-    // Pokud URL constructor selže (např. neplatný formát), považujeme ji za nevalidní.
+    // Pokud URL constructor selže (neplatný formát), vrátíme null.
     return null;
   }
 
-  // Pokud URL neprošla žádnou kontrolou schématu
+  // Pokud schéma není v seznamu, vrátíme null.
   return null;
 };
 
@@ -54,14 +66,12 @@ const Contact = () => {
 
             // Kontrola, zda je URL platný webový odkaz (http/https)
             const isHttpLink =
-              !!safeUrl &&
+              safeUrl &&
               (safeUrl.startsWith("http:") || safeUrl.startsWith("https:"));
 
-            // Pokud je safeUrl falsy (null), vykreslíme neklikatelný prvek.
             if (!safeUrl) {
               return (
                 <li key={id} style={{ backgroundColor: bg, color: "#ffffff" }}>
-                  {/* Vylepšená přístupnost: role="button", aria-disabled a tabIndex pro neklikatelný prvek */}
                   <div
                     title={text}
                     role="button"
@@ -76,7 +86,6 @@ const Contact = () => {
               );
             }
 
-            // Vykreslení funkčního odkazu
             return (
               <li key={id} style={{ backgroundColor: bg, color: "#ffffff" }}>
                 <a
