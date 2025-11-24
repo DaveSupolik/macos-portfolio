@@ -1,3 +1,56 @@
+// ====================================================================
+// NOVÉ IMPORTY ASSETŮ (musíte se ujistit, že existují ve správné cestě)
+// ====================================================================
+
+// --- NAV/DOCK/SOCIAL IKONY (Icons) ---
+import wifiIcon from "../icons/wifi.svg";
+import searchIcon from "../icons/search.svg";
+import userIcon from "../icons/user.svg";
+import modeIcon from "../icons/mode.svg";
+import githubIcon from "../icons/github.svg";
+import atomIcon from "../icons/atom.svg";
+import twitterIcon from "../icons/twitter.svg";
+import linkedinIcon from "../icons/linkedin.svg";
+import gicon1 from "../icons/gicon1.svg";
+import gicon2 from "../icons/gicon2.svg";
+import fileIcon from "../icons/file.svg";
+import gicon4 from "../icons/gicon4.svg";
+import gicon5 from "../icons/gicon5.svg";
+import workIcon from "../icons/work.svg";
+import infoIcon from "../icons/info.svg";
+import trashIcon from "../icons/trash.svg";
+
+// --- DOCK APP IKONY (Images) ---
+import finderIcon from "../images/finder.png";
+import safariIcon from "../images/safari.png";
+import photosIcon from "../images/photos.png";
+import contactIcon from "../images/contact.png";
+import terminalIcon from "../images/terminal.png";
+import trashAppIcon from "../images/trash.png"; // Ikona koše, pokud je potřeba
+
+// --- OSTATNÍ OBRÁZKY (Images) ---
+import blog1Image from "../images/blog1.png";
+import blog2Image from "../images/blog2.png";
+import blog3Image from "../images/blog3.jpg";
+import gal1Image from "../images/gal1.png";
+import gal2Image from "../images/gal2.png";
+import gal3Image from "../images/gal3.png";
+import gal4Image from "../images/gal4.png";
+import folderImage from "../images/folder.png";
+import txtImage from "../images/txt.png";
+import imageImage from "../images/image.png";
+import plainImage from "../images/plain.png";
+import pdfImage from "../images/pdf.png";
+import project1Image from "../images/project-1.jpg";
+import project2Image from "../images/project-2.jpg";
+import project3Image from "../images/project-3.jpg";
+import daveImage from "../images/dave.jpg";
+import dave2Image from "../images/dave-2.jpg";
+import dave3Image from "../images/dave-3.jpeg";
+import trash1Image from "../images/trash-1.png";
+import trash2Image from "../images/trash-2.png";
+// ====================================================================
+
 const navLinks = [
   {
     id: 1,
@@ -19,19 +72,19 @@ const navLinks = [
 const navIcons = [
   {
     id: 1,
-    img: "/icons/wifi.svg",
+    img: wifiIcon, // OPRAVENO
   },
   {
     id: 2,
-    img: "/icons/search.svg",
+    img: searchIcon, // OPRAVENO
   },
   {
     id: 3,
-    img: "/icons/user.svg",
+    img: userIcon, // OPRAVENO
   },
   {
     id: 4,
-    img: "/icons/mode.svg",
+    img: modeIcon, // OPRAVENO
   },
 ];
 
@@ -39,37 +92,37 @@ const dockApps = [
   {
     id: "finder",
     name: "Portfolio", // was "Finder"
-    icon: "finder.png",
+    icon: finderIcon, // OPRAVENO
     canOpen: true,
   },
   {
     id: "safari",
     name: "Articles", // was "Safari"
-    icon: "safari.png",
+    icon: safariIcon, // OPRAVENO
     canOpen: true,
   },
   {
     id: "photos",
     name: "Gallery", // was "Photos"
-    icon: "photos.png",
+    icon: photosIcon, // OPRAVENO
     canOpen: true,
   },
   {
     id: "contact",
     name: "Contact", // or "Get in touch"
-    icon: "contact.png",
+    icon: contactIcon, // OPRAVENO
     canOpen: true,
   },
   {
     id: "terminal",
     name: "Skills", // was "Terminal"
-    icon: "terminal.png",
+    icon: terminalIcon, // OPRAVENO
     canOpen: true,
   },
   {
     id: "trash",
     name: "Archive", // was "Trash"
-    icon: "trash.png",
+    icon: trashAppIcon, // OPRAVENO (předpokládám, že dock ikona koše je také soubor)
     canOpen: false,
   },
 ];
@@ -79,23 +132,23 @@ const blogPosts = [
     id: 1,
     date: "Sep 2, 2025",
     title: "Tailwind CSS in Enterprise Projects: A Scalable Configuration",
-    image: "/images/blog1.png",
-    link: "",
+    image: blog1Image, // OPRAVENO
+    link: null,
   },
   {
     id: 2,
     date: "Aug 28, 2025",
     title: "Type-Safe React: How TypeScript Prevents Production Bugs",
-    image: "/images/blog2.png",
-    link: "",
+    image: blog2Image, // OPRAVENO
+    link: null,
   },
   {
     id: 3,
     date: "Aug 15, 2025",
     title:
       "Server Components vs. Client Components in Next.js 14: A Practical Guide",
-    image: "/images/blog3.jpg",
-    link: "",
+    image: blog3Image, // OPRAVENO
+    link: null,
   },
 ];
 
@@ -130,57 +183,57 @@ const socials = [
   {
     id: 1,
     text: "Github",
-    icon: "/icons/github.svg",
+    icon: githubIcon, // OPRAVENO
     bg: "#f4656b",
-    link: "",
+    link: null,
   },
   {
     id: 2,
     text: "Platform",
-    icon: "/icons/atom.svg",
+    icon: atomIcon, // OPRAVENO
     bg: "#4bcb63",
-    link: "",
+    link: null,
   },
   {
     id: 3,
     text: "Twitter/X",
-    icon: "/icons/twitter.svg",
+    icon: twitterIcon, // OPRAVENO
     bg: "#ff866b",
-    link: "",
+    link: null,
   },
   {
     id: 4,
     text: "LinkedIn",
-    icon: "/icons/linkedin.svg",
+    icon: linkedinIcon, // OPRAVENO
     bg: "#05b6f6",
-    link: "",
+    link: null,
   },
 ];
 
 const photosLinks = [
   {
     id: 1,
-    icon: "/icons/gicon1.svg",
+    icon: gicon1, // OPRAVENO
     title: "Library",
   },
   {
     id: 2,
-    icon: "/icons/gicon2.svg",
+    icon: gicon2, // OPRAVENO
     title: "Memories",
   },
   {
     id: 3,
-    icon: "/icons/file.svg",
+    icon: fileIcon, // OPRAVENO
     title: "Places",
   },
   {
     id: 4,
-    icon: "/icons/gicon4.svg",
+    icon: gicon4, // OPRAVENO
     title: "People",
   },
   {
     id: 5,
-    icon: "/icons/gicon5.svg",
+    icon: gicon5, // OPRAVENO
     title: "Favorites",
   },
 ];
@@ -188,19 +241,19 @@ const photosLinks = [
 const gallery = [
   {
     id: 1,
-    img: "/images/gal1.png",
+    img: gal1Image, // OPRAVENO
   },
   {
     id: 2,
-    img: "/images/gal2.png",
+    img: gal2Image, // OPRAVENO
   },
   {
     id: 3,
-    img: "/images/gal3.png",
+    img: gal3Image, // OPRAVENO
   },
   {
     id: 4,
-    img: "/images/gal4.png",
+    img: gal4Image, // OPRAVENO
   },
 ];
 
@@ -219,14 +272,14 @@ const WORK_LOCATION = {
   id: 1,
   type: "work",
   name: "Work",
-  icon: "/icons/work.svg",
+  icon: workIcon, // OPRAVENO
   kind: "folder",
   children: [
     // ▶ Project 1
     {
       id: 5,
       name: "Lorem Ipsum Lorem Ipsum",
-      icon: "/images/folder.png",
+      icon: folderImage, // OPRAVENO
       kind: "folder",
       position: "top-10 left-5", // icon position inside Finder
       windowPosition: "top-[5vh] left-5", // optional: Finder window position
@@ -234,7 +287,7 @@ const WORK_LOCATION = {
         {
           id: 1,
           name: "Lorem Ipsum Project.txt",
-          icon: "/images/txt.png",
+          icon: txtImage, // OPRAVENO
           kind: "file",
           fileType: "txt",
           position: "top-5 left-10",
@@ -248,7 +301,7 @@ const WORK_LOCATION = {
         {
           id: 2,
           name: "Lorem Ipsum.com",
-          icon: "/images/safari.png",
+          icon: safariIcon, // OPRAVENO (použito z DockApps, předpokládám stejnou ikonu)
           kind: "file",
           fileType: "url",
           href: "https://www.google.com/",
@@ -257,16 +310,16 @@ const WORK_LOCATION = {
         {
           id: 4,
           name: "Lorem Ipsum.png",
-          icon: "/images/image.png",
+          icon: imageImage, // OPRAVENO
           kind: "file",
           fileType: "img",
           position: "top-52 right-80",
-          imageUrl: "/images/project-1.jpg",
+          imageUrl: project1Image, // OPRAVENO
         },
         {
           id: 5,
           name: "Design.fig",
-          icon: "/images/plain.png",
+          icon: plainImage, // OPRAVENO
           kind: "file",
           fileType: "fig",
           href: "https://www.google.com/",
@@ -279,7 +332,7 @@ const WORK_LOCATION = {
     {
       id: 6,
       name: "Lorem Ipsum",
-      icon: "/images/folder.png",
+      icon: folderImage, // OPRAVENO
       kind: "folder",
       position: "top-52 right-80",
       windowPosition: "top-[20vh] left-7",
@@ -287,7 +340,7 @@ const WORK_LOCATION = {
         {
           id: 1,
           name: "Lorem Ipsum Project.txt",
-          icon: "/images/txt.png",
+          icon: txtImage, // OPRAVENO
           kind: "file",
           fileType: "txt",
           position: "top-5 right-10",
@@ -301,7 +354,7 @@ const WORK_LOCATION = {
         {
           id: 2,
           name: "Lorem Ipsum.com",
-          icon: "/images/safari.png",
+          icon: safariIcon, // OPRAVENO
           kind: "file",
           fileType: "url",
           href: "https://www.google.com/",
@@ -310,16 +363,16 @@ const WORK_LOCATION = {
         {
           id: 4,
           name: "Lorem Ipsum.png",
-          icon: "/images/image.png",
+          icon: imageImage, // OPRAVENO
           kind: "file",
           fileType: "img",
           position: "top-52 left-80",
-          imageUrl: "/images/project-2.jpg",
+          imageUrl: project2Image, // OPRAVENO
         },
         {
           id: 5,
           name: "Design.fig",
-          icon: "/images/plain.png",
+          icon: plainImage, // OPRAVENO
           kind: "file",
           fileType: "fig",
           href: "https://www.google.com/",
@@ -332,7 +385,7 @@ const WORK_LOCATION = {
     {
       id: 7,
       name: "Lorem Ipsum App",
-      icon: "/images/folder.png",
+      icon: folderImage, // OPRAVENO
       kind: "folder",
       position: "top-10 left-80",
       windowPosition: "top-[33vh] left-7",
@@ -340,7 +393,7 @@ const WORK_LOCATION = {
         {
           id: 1,
           name: "Lorem Ipsum App Project.txt",
-          icon: "/images/txt.png",
+          icon: txtImage, // OPRAVENO
           kind: "file",
           fileType: "txt",
           position: "top-5 left-10",
@@ -354,7 +407,7 @@ const WORK_LOCATION = {
         {
           id: 2,
           name: "Lorem Ipsum.com",
-          icon: "/images/safari.png",
+          icon: safariIcon, // OPRAVENO
           kind: "file",
           fileType: "url",
           href: "https://www.google.com/",
@@ -363,16 +416,16 @@ const WORK_LOCATION = {
         {
           id: 4,
           name: "Lorem Ipsum.png",
-          icon: "/images/image.png",
+          icon: imageImage, // OPRAVENO
           kind: "file",
           fileType: "img",
           position: "top-52 right-80",
-          imageUrl: "/images/project-3.jpg",
+          imageUrl: project3Image, // OPRAVENO
         },
         {
           id: 5,
           name: "Design.fig",
-          icon: "/images/plain.png",
+          icon: plainImage, // OPRAVENO
           kind: "file",
           fileType: "fig",
           href: "https://www.google.com/",
@@ -387,45 +440,45 @@ const ABOUT_LOCATION = {
   id: 2,
   type: "about",
   name: "About me",
-  icon: "/icons/info.svg",
+  icon: infoIcon, // OPRAVENO
   kind: "folder",
   children: [
     {
       id: 1,
       name: "me.png",
-      icon: "/images/image.png",
+      icon: imageImage, // OPRAVENO
       kind: "file",
       fileType: "img",
       position: "top-10 left-5",
-      imageUrl: "/images/dave.jpg",
+      imageUrl: daveImage, // OPRAVENO
     },
     {
       id: 2,
       name: "casual-me.png",
-      icon: "/images/image.png",
+      icon: imageImage, // OPRAVENO
       kind: "file",
       fileType: "img",
       position: "top-28 right-72",
-      imageUrl: "/images/dave-2.jpg",
+      imageUrl: dave2Image, // OPRAVENO
     },
     {
       id: 3,
       name: "conference-me.png",
-      icon: "/images/image.png",
+      icon: imageImage, // OPRAVENO
       kind: "file",
       fileType: "img",
       position: "top-52 left-80",
-      imageUrl: "/images/dave-3.jpeg",
+      imageUrl: dave3Image, // OPRAVENO
     },
     {
       id: 4,
       name: "about-me.txt",
-      icon: "/images/txt.png",
+      icon: txtImage, // OPRAVENO
       kind: "file",
       fileType: "txt",
       position: "top-60 left-5",
       subtitle: "Lorem Ipsum Lorem Ipsum",
-      image: "/images/dave.jpg",
+      image: daveImage, // OPRAVENO
       description: [
         "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum.",
         "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum.",
@@ -440,13 +493,13 @@ const RESUME_LOCATION = {
   id: 3,
   type: "resume",
   name: "Resume",
-  icon: "/icons/file.svg",
+  icon: fileIcon, // OPRAVENO
   kind: "folder",
   children: [
     {
       id: 1,
       name: "Resume.pdf",
-      icon: "/images/pdf.png",
+      icon: pdfImage, // OPRAVENO
       kind: "file",
       fileType: "pdf",
       // you can add `href` if you want to open a hosted resume
@@ -459,26 +512,26 @@ const TRASH_LOCATION = {
   id: 4,
   type: "trash",
   name: "Trash",
-  icon: "/icons/trash.svg",
+  icon: trashIcon, // OPRAVENO
   kind: "folder",
   children: [
     {
       id: 1,
       name: "trash1.png",
-      icon: "/images/image.png",
+      icon: imageImage, // OPRAVENO
       kind: "file",
       fileType: "img",
       position: "top-10 left-10",
-      imageUrl: "/images/trash-1.png",
+      imageUrl: trash1Image, // OPRAVENO
     },
     {
       id: 2,
       name: "trash2.png",
-      icon: "/images/image.png",
+      icon: imageImage, // OPRAVENO
       kind: "file",
       fileType: "img",
       position: "top-40 left-80",
-      imageUrl: "/images/trash-2.png",
+      imageUrl: trash2Image, // OPRAVENO
     },
   ],
 };
