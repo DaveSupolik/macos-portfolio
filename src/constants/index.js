@@ -133,14 +133,14 @@ const blogPosts = [
     date: "Sep 2, 2025",
     title: "Tailwind CSS in Enterprise Projects: A Scalable Configuration",
     image: blog1Image, // OPRAVENO
-    link: "",
+    link: null,
   },
   {
     id: 2,
     date: "Aug 28, 2025",
     title: "Type-Safe React: How TypeScript Prevents Production Bugs",
     image: blog2Image, // OPRAVENO
-    link: "",
+    link: null,
   },
   {
     id: 3,
@@ -148,7 +148,7 @@ const blogPosts = [
     title:
       "Server Components vs. Client Components in Next.js 14: A Practical Guide",
     image: blog3Image, // OPRAVENO
-    link: "",
+    link: null,
   },
 ];
 
@@ -185,28 +185,28 @@ const socials = [
     text: "Github",
     icon: githubIcon, // OPRAVENO
     bg: "#f4656b",
-    link: "",
+    link: null,
   },
   {
     id: 2,
     text: "Platform",
     icon: atomIcon, // OPRAVENO
     bg: "#4bcb63",
-    link: "",
+    link: null,
   },
   {
     id: 3,
     text: "Twitter/X",
     icon: twitterIcon, // OPRAVENO
     bg: "#ff866b",
-    link: "",
+    link: null,
   },
   {
     id: 4,
     text: "LinkedIn",
     icon: linkedinIcon, // OPRAVENO
     bg: "#05b6f6",
-    link: "",
+    link: null,
   },
 ];
 

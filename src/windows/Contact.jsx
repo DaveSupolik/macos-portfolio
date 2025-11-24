@@ -6,13 +6,13 @@ import daveImage from "../images/dave.jpg";
 
 const sanitizeUrl = (url) => {
   if (typeof url !== "string") return "#";
-  // Omezí nebezpečné protokoly (jako 'javascript:') a zajišťuje, že URL začíná http/https
-  if (url.startsWith("http://") || url.startsWith("https://")) {
+  const allowedSchemes = ["https://", "http://", "mailto:", "tel:"];
+  const trimmed = url.trim().toLowerCase();
+  if (allowedSchemes.some((scheme) => trimmed.startsWith(scheme))) {
     return url;
   }
-  // Alternativně, pokud URL začíná jiným protokolem (mailto, tel), nechte ji projít.
-  // Pro webové odkazy (socials) je ale nejbezpečnější vyžadovat http/https.
-  return "about:blank"; // Blokuje nebezpečné odkazy
+
+  return "about:blank";
 };
 
 const Contact = () => {
@@ -29,7 +29,7 @@ const Contact = () => {
         <p>dave.supolik@gmail.com</p>
         <ul>
           {socials.map(({ id, bg, link, icon, text }) => (
-            <li key={id} style={{ backgroundColor: bg, color: textColor }}>
+            <li key={id} style={{ backgroundColor: bg, color: "#ffffff" }}>
               <a
                 href={sanitizeUrl(link)}
                 target="_blank"
