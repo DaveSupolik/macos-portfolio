@@ -5,21 +5,34 @@ import { Tooltip } from "react-tooltip";
 import gsap from "gsap";
 import useWindowStore from "@store/window.js";
 
-// === FUNKCE PRO SANITIZACI ZDROJE IKONY ===
 const sanitizeIconSrc = (src) => {
   if (typeof src !== "string" || !src) return null;
 
   const lowerSrc = src.toLowerCase().trim();
 
+  // 1. ZABRÁNIT XSS
   // Zakázat známé nebezpečné protokoly pro obrázky
   if (lowerSrc.startsWith("javascript:") || lowerSrc.startsWith("vbscript:")) {
     return null;
   }
 
-  // Povolit data-URL, http(s) a relativní/základní cesty.
+  // 2. OMEZIT EXTERNI ZDROJE A NEZÁVISLÉ DATA: URL
+  // Ikony by měly být buď relativní cesty (interní), nebo base64 (interně generované).
+
+  // Zakázat vzdálené URL (SSRF, tracking beacons)
+  if (lowerSrc.startsWith("http:") || lowerSrc.startsWith("https:")) {
+    return null;
+  }
+
+  // Volné data: URL (které by mohly nést velké payloady) také zakážeme,
+  // pokud nezačínají base64 (což by mělo být ošetřeno bundlerem).
+  // Nicméně Base64 URL typicky začíná "data:image/svg+xml;base64," nebo podobně.
+  // Pro nejpřísnější ochranu se zaměříme na blokování http/https.
+
+  // Pokud je to Base64 generované bundlerem, projde to.
+  // Pokud je to relativní cesta, projde to.
   return src;
 };
-
 const Dock = () => {
   const { openWindow, closeWindow, windows } = useWindowStore();
   const dockRef = React.useRef(null);

@@ -12,7 +12,7 @@ const sanitizeUrl = (url) => {
   if (trimmedUrl.length === 0) return null;
 
   // 2. Kontrola řídicích znaků a bílých mezer
-  if (/[^\S ]|[\u0000-\u001F\u007F]/.test(trimmedUrl)) return null;
+  if (/[\u0000-\u001F\u007F]/.test(trimmedUrl)) return null;
 
   // 3. Normalizace protokolem relativních URL (//example.com) na https://
   const normalized = trimmedUrl.startsWith("//")
@@ -22,22 +22,49 @@ const sanitizeUrl = (url) => {
   // 4. Seznam povolených schémat
   const allowedSchemes = ["https:", "http:", "mailto:", "tel:"];
 
+  // 🚨 NOVÉ: Povolené domény pro sociální sítě a webové odkazy (Allowlist)
+  // Používáme ho pro striktní kontrolu u protokolů http/https.
+  const allowedHostnames = [
+    "linkedin.com",
+    "github.com",
+    "twitter.com",
+    "x.com",
+    "facebook.com",
+    "instagram.com",
+    "youtube.com",
+    "discord.gg",
+  ];
+
   try {
     // Používáme normalizovanou URL pro parsování
     const parsedUrl = new URL(normalized);
 
-    // 🚨 ROBUSTNÍ KONTROLA SCHÉMATU (NOVÉ)
-    // Převedeme protokol z parsované URL na malá písmena pro striktní porovnání.
+    // 🚨 ROBUSTNÍ KONTROLA SCHÉMATU
     const protocolLower = parsedUrl.protocol.toLowerCase();
 
     if (allowedSchemes.includes(protocolLower)) {
-      // Upgrade na HTTPS
-      if (protocolLower === "http:") {
-        // Používáme RegExp pro bezpečný a robustní upgrade, pokud je URL http://
-        return normalized.replace(/^http:\/\//i, "https://");
+      // 🚨 NOVÁ KONTROLA HOSTNAME pro HTTP/HTTPS
+      if (protocolLower === "http:" || protocolLower === "https:") {
+        const hostname = parsedUrl.hostname.toLowerCase();
+
+        // Kontrolujeme, zda hostname přesně odpovídá povolené doméně
+        // nebo zda končí na .[povolená_doména] (pro subdomény jako www. nebo subdomain.)
+        const isAllowedHostname = allowedHostnames.some(
+          (allowed) => hostname === allowed || hostname.endsWith(`.${allowed}`)
+        );
+
+        if (!isAllowedHostname) {
+          // Doména není v seznamu povolených hostitelů
+          return null;
+        }
+
+        // Upgrade na HTTPS pro povolené hostitele
+        if (protocolLower === "http:") {
+          return normalized.replace(/^http:\/\//i, "https://");
+        }
       }
 
-      // Vracíme normalized (již ošetřená) URL pro https, mailto a tel
+      // Vracíme normalized pro HTTPS (schválený hostname), mailto a tel
       return normalized;
     } else {
       // Protokol není v seznamu povolených
