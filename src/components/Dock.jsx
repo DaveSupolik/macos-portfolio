@@ -84,12 +84,18 @@ const Dock = () => {
               onClick={() => toggleApp({ id, canOpen })}
             >
               <img
-                // OPRAVENO: Použijeme přímo proměnnou 'icon' z konstant.
-                // Předpokládáme, že 'icon' již obsahuje importovaný objekt obrázku.
-                src={icon}
-                alt={name}
+                // KONTROLA TYPU: Zajišťuje, že 'icon' je platný řetězec (URL/base64)
+                src={typeof icon === "string" && icon ? icon : ""}
+                // VYLEPŠENÁ ACCESSIBILITY: Přidává "icon" k alt textu
+                alt={name ? `${name} icon` : "app icon"}
                 loading="lazy"
                 className={canOpen ? "" : "opacity-60"}
+                // FALLBACK: Zabrání zobrazení rozbité ikony
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = ""; // Nastaví prázdný zdroj
+                  e.currentTarget.alt = "icon failed to load"; // Aktualizuje alt text
+                }}
               />
             </button>
           </div>

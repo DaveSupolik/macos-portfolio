@@ -5,10 +5,12 @@ import { socials } from "@constants";
 import daveImage from "../images/dave.jpg"; // Cesta k obrázku ponechána podle Vašeho vstupu
 
 const sanitizeUrl = (url) => {
-  if (typeof url !== "string") return "about:blank";
+  // 1. Explicitně kontrolujeme null, undefined nebo ne-řetězec
+  if (!url || typeof url !== "string") return null;
 
   const trimmedUrl = url.trim();
-  if (trimmedUrl.length === 0) return "about:blank";
+  // 2. Kontrolujeme prázdný řetězec
+  if (trimmedUrl.length === 0) return null;
 
   // Povolená schémata pro validaci URL
   const allowedSchemes = ["https:", "http:", "mailto:", "tel:"];
@@ -16,12 +18,22 @@ const sanitizeUrl = (url) => {
   try {
     const parsedUrl = new URL(trimmedUrl);
 
-    if (allowedSchemes.includes(parsedUrl.protocol)) {
-      return trimmedUrl; // Vrátí původní, validní URL
+    // Pokud je schéma "http:", nahradíme ho "https:"
+    if (parsedUrl.protocol === "http:") {
+      const upgradedUrl = trimmedUrl.replace("http://", "https://");
+      return upgradedUrl;
     }
-  } catch (e) {}
 
-  return "about:blank"; // Neplatné nebo neznámé schéma
+    if (allowedSchemes.includes(parsedUrl.protocol)) {
+      return trimmedUrl; // Vrátí původní, validní URL (https, mailto, tel)
+    }
+  } catch {
+    // Pokud URL constructor selže (např. neplatný formát), považujeme ji za nevalidní.
+    return null;
+  }
+
+  // Pokud URL neprošla žádnou kontrolou schématu
+  return null;
 };
 
 const Contact = () => {
@@ -42,14 +54,21 @@ const Contact = () => {
 
             // Kontrola, zda je URL platný webový odkaz (http/https)
             const isHttpLink =
-              safeUrl.startsWith("http:") || safeUrl.startsWith("https:");
+              !!safeUrl &&
+              (safeUrl.startsWith("http:") || safeUrl.startsWith("https:"));
 
-            // 1. Zkontrolujeme, zda je URL neplatná
-            if (safeUrl === "about:blank") {
+            // Pokud je safeUrl falsy (null), vykreslíme neklikatelný prvek.
+            if (!safeUrl) {
               return (
                 <li key={id} style={{ backgroundColor: bg, color: "#ffffff" }}>
-                  {/* Vykreslíme neklikatelný kontejner */}
-                  <div title={text} aria-disabled="true">
+                  {/* Vylepšená přístupnost: role="button", aria-disabled a tabIndex pro neklikatelný prvek */}
+                  <div
+                    title={text}
+                    role="button"
+                    aria-disabled="true"
+                    tabIndex={-1}
+                    style={{ cursor: "not-allowed" }}
+                  >
                     <img src={icon} alt={text} className="size-5" />
                     <p>{text}</p>
                   </div>
@@ -57,12 +76,11 @@ const Contact = () => {
               );
             }
 
-            // 2. Vykreslení funkčního odkazu
+            // Vykreslení funkčního odkazu
             return (
               <li key={id} style={{ backgroundColor: bg, color: "#ffffff" }}>
                 <a
                   href={safeUrl}
-                  // Target a Rel pouze pro HTTP/HTTPS odkazy
                   target={isHttpLink ? "_blank" : undefined}
                   rel={isHttpLink ? "noopener noreferrer" : undefined}
                   title={text}

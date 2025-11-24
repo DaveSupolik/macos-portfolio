@@ -13,7 +13,14 @@ const Navbar = () => {
     <nav>
       <div>
         {/* 2. Nahrazení hardcoded cesty proměnnou */}
-        <img src={appleLogo} alt="apple logo" />
+        <img
+          src={appleLogo}
+          alt="apple logo"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.style.visibility = "hidden";
+          }}
+        />
         <p className="font-bold">Dave's Macbook</p>
         <ul>
           {navLinks.map(({ id, name, type }) => (

@@ -38,7 +38,15 @@ const Resume = () => {
         error={<div className="p-4 text-red-600">Failed to load resume.</div>}
         onLoadError={(err) => console.error("PDF load error:", err)}
       >
-        <Page pageNumber={1} renderTextLayer renderAnnotationLayer />
+        <Page
+          pageNumber={1}
+          width={Math.min(
+            750,
+            typeof window !== "undefined" ? window.innerWidth - 80 : 820
+          )}
+          renderTextLayer={false}
+          renderAnnotationLayer={false}
+        />
       </Document>
     </>
   );
