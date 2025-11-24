@@ -15,15 +15,22 @@ const sanitizeUrl = (url) => {
   if (/[\u0000-\u001F\u007F]/.test(trimmedUrl)) return null;
 
   // 3. Normalizace protokolem relativních URL (//example.com) na https://
-  const normalized = trimmedUrl.startsWith("//")
+  // TATO NORMALIZACE BUDE IMPLICITNĚ UPGRADE ZABEZPEČOVAT
+  let normalized = trimmedUrl.startsWith("//")
     ? `https:${trimmedUrl}`
     : trimmedUrl;
 
-  // 4. Seznam povolených schémat
-  const allowedSchemes = ["https:", "http:", "mailto:", "tel:"];
+  // 🚨 NOVÁ ZMĚNA: UPGRADE HTTP NA HTTPS PŘED PARSOVÁNÍM
+  // Tím zajistíme, že URL constructor parsuje Https a nebude vyžadovat http: v allowedSchemes
+  if (normalized.toLowerCase().startsWith("http://")) {
+    normalized = normalized.replace(/^http:\/\//i, "https://");
+  }
 
-  // 🚨 NOVÉ: Povolené domény pro sociální sítě a webové odkazy (Allowlist)
-  // Používáme ho pro striktní kontrolu u protokolů http/https.
+  // 4. Seznam povolených schémat
+  // 🚨 ZMĚNA: Odstranění "http:"
+  const allowedSchemes = ["https:", "mailto:", "tel:"];
+
+  // Povolené domény pro sociální sítě a webové odkazy (Allowlist)
   const allowedHostnames = [
     "linkedin.com",
     "github.com",
@@ -39,16 +46,14 @@ const sanitizeUrl = (url) => {
     // Používáme normalizovanou URL pro parsování
     const parsedUrl = new URL(normalized);
 
-    // 🚨 ROBUSTNÍ KONTROLA SCHÉMATU
+    // ROBUSTNÍ KONTROLA SCHÉMATU
     const protocolLower = parsedUrl.protocol.toLowerCase();
 
     if (allowedSchemes.includes(protocolLower)) {
-      // 🚨 NOVÁ KONTROLA HOSTNAME pro HTTP/HTTPS
-      if (protocolLower === "http:" || protocolLower === "https:") {
+      // Kontrola hostitele pro webové protokoly
+      if (protocolLower === "https:") {
         const hostname = parsedUrl.hostname.toLowerCase();
 
-        // Kontrolujeme, zda hostname přesně odpovídá povolené doméně
-        // nebo zda končí na .[povolená_doména] (pro subdomény jako www. nebo subdomain.)
         const isAllowedHostname = allowedHostnames.some(
           (allowed) => hostname === allowed || hostname.endsWith(`.${allowed}`)
         );
@@ -57,14 +62,9 @@ const sanitizeUrl = (url) => {
           // Doména není v seznamu povolených hostitelů
           return null;
         }
-
-        // Upgrade na HTTPS pro povolené hostitele
-        if (protocolLower === "http:") {
-          return normalized.replace(/^http:\/\//i, "https://");
-        }
       }
 
-      // Vracíme normalized pro HTTPS (schválený hostname), mailto a tel
+      // Vracíme normalized pro https (schválený hostname), mailto a tel
       return normalized;
     } else {
       // Protokol není v seznamu povolených
@@ -93,9 +93,8 @@ const Contact = () => {
             const safeUrl = sanitizeUrl(link);
 
             // Kontrola, zda je URL platný webový odkaz (http/https)
-            const isHttpLink =
-              safeUrl &&
-              (safeUrl.startsWith("http:") || safeUrl.startsWith("https:"));
+            // Nyní se kontroluje pouze https
+            const isHttpLink = safeUrl && safeUrl.startsWith("https:");
 
             if (!safeUrl) {
               return (
